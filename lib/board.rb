@@ -11,11 +11,21 @@ class Board
 
   def initialize
     @board_coord_hash = {}
-    create_board
+    draw_board
   end
 
-  def create_board
+  def draw_board
     generate_board_hash
+    black_grid = "_".colorize(background: :black)
+    white_grid = "_".colorize(:color => :black, :background => :white)
+    puts '  _________________'
+    BOARD_NUMS.each do |num|
+      if num.odd?
+        puts "#{num} |#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|"
+      else
+        puts "#{num} |#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|"
+      end
+    end
   end
 
   def generate_board_hash
