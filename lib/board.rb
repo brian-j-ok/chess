@@ -6,16 +6,16 @@ require_relative 'piece'
 # Board Class
 class Board
 
-  BOARD_LETTERS = [*('A'..'G')]
+  BOARD_LETTERS = [*('A'..'H')]
   BOARD_NUMS = (1..8).to_a
 
   def initialize
     @board_coord_hash = {}
+    generate_board_hash
     draw_board
   end
 
   def draw_board
-    generate_board_hash
     puts '  _________________'
     BOARD_NUMS.each do |num|
       print "#{num} "
@@ -25,16 +25,12 @@ class Board
       print '|'
       puts
     end
-      # if num.odd?
-      #   puts "#{num} |#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|"
-      # else
-      #   puts "#{num} |#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|"
-      # end
+    puts "   A B C D E F G H"
   end
 
   def grid_value(letter, num)
     black_grid = " ".colorize(:background => :black)
-    white_grid = " ".colorize(:color => :black, :background => :white)
+    white_grid = " ".colorize(:background => :white)
     return @board_coord_hash[letter + num.to_s].symbol unless @board_coord_hash[letter + num.to_s].nil?
 
     if num.odd?
@@ -73,6 +69,7 @@ class Board
   end
 
   def add_piece(letter, num, color)
+    p "Letter: #{letter} Num: #{num} Color: #{color}"
     case num
     when 1, 8
       case letter
@@ -90,6 +87,22 @@ class Board
     else
       Piece.new('pawn', color)
     end
+  end
+
+  # TODO: Implement logic to make sure that the selected piece has a possible, legal move and if not return false
+  def can_move?(piece_to_move, player_color)
+    pp piece_to_move
+    pp player_color
+    pp @board_coord_hash[piece_to_move]
+
+    return false if @board_coord_hash[piece_to_move].nil? || @board_coord_hash[piece_to_move].color != player_color
+
+    true
+  end
+
+  def move_piece(piece_to_move, move_key)
+    @board_coord_hash[move_key] = @board_coord_hash[piece_to_move]
+    @board_coord_hash[piece_to_move] = nil 
   end
 end
 

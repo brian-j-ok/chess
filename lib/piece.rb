@@ -14,8 +14,9 @@ class Piece
   def set_symbol
     case @type
     when 'pawn'
-      @symbol = "\u2659".encode('utf-8') if @color == 'white'
-      @symbol = "\u265F".encode('utf-8') if @color == 'black'
+      @color == 'white' ? @symbol = "\u2659".encode('utf-8') : @symbol = "\u265F".encode('utf-8')
+      # @symbol = "\u2659".encode('utf-8') if @color == 'white'
+      # @symbol = "\u265F".encode('utf-8') if @color == 'black'
     when 'knight'
       @symbol = "\u2658".encode('utf-8') if @color == 'white'
       @symbol = "\u265E".encode('utf-8') if @color == 'black'
