@@ -16,16 +16,44 @@ class Board
 
   def draw_board
     generate_board_hash
-    black_grid = "_".colorize(background: :black)
-    white_grid = "_".colorize(:color => :black, :background => :white)
     puts '  _________________'
     BOARD_NUMS.each do |num|
-      if num.odd?
-        puts "#{num} |#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|"
+      print "#{num} "
+      BOARD_LETTERS.each do |letter|
+        print "|#{grid_value(letter, num)}" unless grid_value(letter, num).nil?
+      end
+      print '|'
+      puts
+    end
+      # if num.odd?
+      #   puts "#{num} |#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|"
+      # else
+      #   puts "#{num} |#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|"
+      # end
+  end
+
+  def grid_value(letter, num)
+    black_grid = " ".colorize(:background => :black)
+    white_grid = " ".colorize(:color => :black, :background => :white)
+    return @board_coord_hash[letter + num.to_s].symbol unless @board_coord_hash[letter + num.to_s].nil?
+
+    if num.odd?
+      case letter
+      when 'A', 'C', 'E', 'G'
+        return black_grid
       else
-        puts "#{num} |#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|#{black_grid}|#{white_grid}|"
+        return white_grid
+      end
+    else
+      case letter
+      when 'A', 'C', 'E', 'G'
+        return white_grid
+      else
+        return black_grid
       end
     end
+
+    nil
   end
 
   def generate_board_hash
