@@ -2,6 +2,7 @@ require 'pp'
 require_relative 'board'
 require_relative 'player'
 
+# Handles Game Logic
 class Game
   attr_accessor :board, :player1, :player2
 
@@ -17,21 +18,26 @@ class Game
   end
 
   def play(player)
+    piece_to_move = nil
+    move_to = nil
     loop do
       puts "#{player.name}, what piece would you like to move?"
       piece_to_move = gets.chomp
-      puts piece_to_move
       break if @board.can_move?(piece_to_move, player.color)
 
       puts 'Invalid Selection'
     end
 
-    puts "Where would you like to move that piece to?"
-    move_to = gets.chomp
+    loop do
+      puts "Where would you like to move that piece to?"
+      move_to = gets.chomp
+      break if @board.valid_move?(piece_to_move, move_to)
+
+      puts 'Invalid Selection'
+    end
 
     @board.move_piece(piece_to_move, move_to)
   end
-
 end
 
 Game.new

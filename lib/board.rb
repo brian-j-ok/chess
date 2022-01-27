@@ -2,6 +2,7 @@
 require 'colorize'
 require 'pp'
 require_relative 'piece'
+require_relative 'movement'
 
 # Board Class
 class Board
@@ -53,13 +54,13 @@ class Board
   end
 
   def generate_board_hash
-    BOARD_LETTERS.each do |letter|
-      BOARD_NUMS.each do |num|
+    BOARD_NUMS.each do |num|
+      BOARD_LETTERS.each do |letter|
         case num
         when 1, 2
-          @board_coord_hash[letter + num.to_s] = add_piece(letter, num, 'white')
-        when 7, 8
           @board_coord_hash[letter + num.to_s] = add_piece(letter, num, 'black')
+        when 7, 8
+          @board_coord_hash[letter + num.to_s] = add_piece(letter, num, 'white')
         else
           @board_coord_hash[letter + num.to_s] = nil
         end
@@ -91,18 +92,24 @@ class Board
 
   # TODO: Implement logic to make sure that the selected piece has a possible, legal move and if not return false
   def can_move?(piece_to_move, player_color)
-    pp piece_to_move
-    pp player_color
-    pp @board_coord_hash[piece_to_move]
-
     return false if @board_coord_hash[piece_to_move].nil? || @board_coord_hash[piece_to_move].color != player_color
 
     true
   end
 
+  def valid_move?(piece_to_move, move_to_coords)
+    return false if @board_coord_hash[piece_to_move].nil?
+
+    piece = @board_coord_hash[piece_to_move]
+    movement = Movement.new(piece, @board_coord_hash, piece_to_move, move_to_coords)
+    movement.can_move?
+  end
+
   def move_piece(piece_to_move, move_key)
     @board_coord_hash[move_key] = @board_coord_hash[piece_to_move]
-    @board_coord_hash[piece_to_move] = nil 
+    @board_coord_hash[piece_to_move] = nil
+
+    draw_board
   end
 end
 
