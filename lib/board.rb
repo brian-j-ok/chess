@@ -91,6 +91,7 @@ class Board
   end
 
   # TODO: Implement logic to make sure that the selected piece has a possible, legal move and if not return false
+  # CAN RESULT IN INFINITE LOOP WHERE PLAYER SELECTED PIECE WITH NO VALID MOVES
   def can_move?(piece_to_move, player_color)
     return false if @board_coord_hash[piece_to_move].nil? || @board_coord_hash[piece_to_move].color != player_color
 

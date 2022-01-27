@@ -22,18 +22,21 @@ class Movement
       @movement_array = [[2, 1], [1, 2], [-1, 2], [-2, 1], [-2, -1], [-1, -2], [1, -2], [2, -1]]
       knight_move
     when 'bishop'
-
+      @movement_array = [[1, 1], [-1, -1], [1, -1], [-1, 1]]
+      directional_move
     when 'rook'
-
+      @movement_array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+      directional_move
     when 'queen'
-
+      @movement_array = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, -1], [1, -1], [-1, 1]]
+      directional_move
     when 'king'
-
-    else
-      puts 'Error: No accessible piece type found'
+      @movement_array = [[0, 1], [0, -1], [1, 0], [-1, 0]]
     end
   end
 
+  # TODO: Add ability to move pawn two spaces if piece has not yet moved
+  # TODO: Add ability for pawn to move diagonally if there is an opponents piece there
   def pawn_move
     moved_coords = [@start_coords[0] + @movement_array[0][0], @start_coords[1] + @movement_array[0][1]]
     moved_coords == @end_coords
@@ -52,5 +55,22 @@ class Movement
       end
     end
     false
+  end
+
+  def directional_move
+    @movement_array.each do |coord|
+      moved_coords = @start_coords
+      moved_coords = [moved_coords[0] + coord[0], moved_coords[1] + coord[1]]
+      while moved_coords[0] < 8 && moved_coords[0] > 0 && moved_coords[1] < 8 && moved_coords[1] > 0
+        break if @board_hash[BOARD_LETTERS_NUM_VALUE.key(moved_coords[0]) + moved_coords[1].to_s] != nil
+
+        moved_coords = [moved_coords[0] + coord[0], moved_coords[1] + coord[1]]
+        return true if moved_coords == @end_coords
+      end
+    end
+    false
+  end
+
+  def king_move
   end
 end

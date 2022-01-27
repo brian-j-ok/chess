@@ -8,6 +8,7 @@ class Piece
     @color = color
     p @color
     set_symbol
+    @has_moved = false
   end
 
   # TODO: Rewrite using ternary operator to reduce lines of code
@@ -35,6 +36,12 @@ class Piece
     end
   end
 
+  def had_moved?
+    return false if !@has_moved
+    
+    @has_moved = true
+  end
+  
   def to_s
     @symbol
   end

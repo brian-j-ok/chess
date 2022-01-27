@@ -13,8 +13,20 @@ class Game
     @player1.name = gets.chomp
     puts "Plase input the name for player 2:" 
     @player2 = Player.new('black')
-    @player2 = gets.chomp
-    play(@player1)
+    @player2.name = gets.chomp
+    @turn = true
+    start_game
+  end
+
+  def start_game
+    loop do
+      if @turn
+        play(@player1)
+      else
+        play(@player2)
+        @turn = true
+      end
+    end
   end
 
   def play(player)
